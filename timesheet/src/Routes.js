@@ -5,7 +5,6 @@ import SignIn from '../src/components/SignIn';
 import TimeSheetEntries from '../src/components/Timesheet/TimeSheetEntries';
 import Header from '../src/components/Header';
 import TimeSheetCreate from '../src/components/Timesheet/TimeSheetCreate';
-import TimeSheetEdit from '../src/components/Timesheet/TimeSheetEdit';
 
 const Routes = (props) => {
   return (
@@ -15,7 +14,6 @@ const Routes = (props) => {
           <Header />
           <Route path="/" exact component={TimeSheetEntries} />
           <Route path="/time_sheet_entries/create" exact component={TimeSheetCreate} />
-          <Route path="/time_sheet_entries/edit/:id" exact component={TimeSheetEdit} />
         </> :
         <Route path="/" exact component={SignIn} />
         }

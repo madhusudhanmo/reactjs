@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import sedinApi from '../../apis/sedin';
 
@@ -111,6 +112,22 @@ const TimeSheetEntries = (props) => {
     callApi();
   }
 
+  const deleteTimesheet = (timeSheetId) => {
+    const deleteTS = async () => {
+      const { data } = await axios.delete("https://staging-timesheet.railsfactory.com/api/v1/time_sheet", {
+        headers: {
+          Authorization: props.auth_key,
+        },
+        data: {
+          id: timeSheetId
+        },
+      });
+
+      callApi()
+    };
+    deleteTS();
+  }
+
   return (
     <>
     <TableContainer component={Paper} className={classes.root}>
@@ -171,10 +188,7 @@ const TimeSheetEntries = (props) => {
               <StyledTableCell>{row.hours}</StyledTableCell>
               <StyledTableCell>{row.comments}</StyledTableCell>
               <StyledTableCell>
-                <Link to={`/time_sheet_entries/edit/${row.id}`} className="ui button primary">
-                  <EditIcon />
-                </Link>
-                <DeleteIcon />
+                <DeleteIcon onClick={() => deleteTimesheet(row.id)}/>
               </StyledTableCell>
             </StyledTableRow>
           ))}
