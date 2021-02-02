@@ -24,6 +24,7 @@ const Routes = (props) => {
 }
 
 const mapStateToProps = state => {
+  console.log(state)
   return { isSignedIn: state.auth.isSignedIn }
 }
 

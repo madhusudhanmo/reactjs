@@ -13,7 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Button from '@material-ui/core/Button';
+import { Button, TextField, NativeSelect } from '@material-ui/core';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -53,32 +53,99 @@ const useStyles = makeStyles({
   },
   addNew: {
     float: 'right',
-    marginBottom: '5px',
   },
+  select: {
+    marginBottom: '5px',
+    marginLeft: '10px',
+  }
 });
+
+const options = [
+    {selected: false, value: "Today"},
+    {selected: false, value: "Yesterday"},
+    {selected: false, value: "This Week"},
+    {selected: false, value: "Last Week"},
+    {selected: true, value: "This Month"},
+    {selected: false, value: "Last Month"},
+    {selected: false, value: "Custom Date"}]
 
 const TimeSheetEntries = (props) => {
   const classes = useStyles();
   const [timeSheetEntries, setTimeSheetEntries] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [month, setMonth] = useState('This Month');
+  const [project, setProject] = useState(null);
 
   useEffect(() => {
+    callApi();
+
+    const fetchProjects = async () => {
+      const { data } = await sedinApi.get("/api/v1/time_sheet/employee_projects", {
+        headers: {
+          Authorization: props.auth_key
+        },
+      });
+
+      setProjects(data.projects)
+    }
+    fetchProjects();
+  }, []);
+
+  const callApi = () => {
     const fetchTimesheetEntries = async () => {
       const { data } = await sedinApi.get("/api/v1/time_sheet", {
         headers: {
           Authorization: props.auth_key
         },
         params: {
-          date: 'This Month'
+          date: month,
+          project_id: project
         },
       });
       setTimeSheetEntries(data.time_sheet_entries)
     };
     fetchTimesheetEntries();
-  }, []);
+  }
+
+  const fetchData = () => {
+    callApi();
+  }
 
   return (
     <>
-    <TableContainer component={Paper}  className={classes.root}>
+    <TableContainer component={Paper} className={classes.root}>
+      <Button variant="contained" className={classes.select}>
+        <NativeSelect
+          name="month"
+          inputProps={{ 'aria-label': 'age' }}
+          onChange={(e) => setMonth(e.target.value)}
+        >
+          {options.map((option) => (
+            <option defaultValue={month} key={option.value} value={option.value}>
+              {option.value}
+            </option>
+          ))}
+        </NativeSelect>
+      </Button>
+      <Button variant="contained" className={classes.select}>
+        <NativeSelect
+          name="project_id"
+          inputProps={{ 'aria-label': 'age' }}
+          onChange={(e) => setProject(e.target.value)}
+        >
+          <option defaultValue={true} key='all projects'>
+            All Projects
+          </option>
+          {projects.map((project) => (
+            <option defaultValue={project} key={project.name} value={project.id}>
+              {project.name}
+            </option>
+          ))}
+        </NativeSelect>
+      </Button>
+      <Button variant="contained" className={classes.select} color="primary" onClick={fetchData}>
+        Search
+      </Button>
       <Link to={`/time_sheet_entries/create`} className="ui button primary">
         <Button variant="contained" color="primary" className={classes.addNew}>
           Add New

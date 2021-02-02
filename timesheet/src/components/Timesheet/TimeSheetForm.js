@@ -14,14 +14,14 @@ const TimeSheetForm = (props) => {
   const [comment, setComment] = useState('')
   const onSubmitForm = (e) => {
     e.preventDefault()
-    const params = {time_sheet: {0: {project_id: project, date: date, comments: comment, hours: hours}}}
+    const params = {time_sheet: {project_id: project, date: date, comments: comment, hours: hours}}
     const response = sedinApi.post('/api/v1/time_sheet/time_sheet_entries', {}, {
       headers: {
         Authorization: props.auth.currentUser.auth_token
       },
       params: params
     })
-    history.push('/');
+    // history.push('/');
   }
 
   return (
