@@ -26,10 +26,10 @@ const TimeSheetForm = (props) => {
 
   return (
     <form noValidate className="formDaila">
-      <TextField name="date" onChange={(e) => setDate(e.target.value)} label="Date" />
-      <TextField name="project" onChange={(e) => setProject(e.target.value)} label="Project" />
-      <TextField name="hours" onChange={(e) => setHours(e.target.value)} label="Hours" />
-      <TextField name="comment" onChange={(e) => setComment(e.target.value)} label="Comments" />
+      <TextField name="date" onChange={(e) => setDate(e.target.value)} label="Date" /><br />
+      <TextField name="project" onChange={(e) => setProject(e.target.value)} label="Project" /><br />
+      <TextField name="hours" onChange={(e) => setHours(e.target.value)} label="Hours" /><br />
+      <TextField name="comment" onChange={(e) => setComment(e.target.value)} label="Comments" /><br />
       <Button
         color="primary"
         variant="contained"
