@@ -21,7 +21,7 @@ const TimeSheetForm = (props) => {
       },
       params: params
     })
-    // history.push('/');
+    history.push('/');
   }
 
   return (
